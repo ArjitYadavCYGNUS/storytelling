@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+            background-position: center;
+            background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20240104/pngtree-dynamic-design-books-soaring-through-arrow-adorned-background-with-textured-patterns-image_13911344.png');
+        }
+
+        .container {
+            background-color: rgba(30, 30, 30, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            opacity: 0.8;
+        }
+
+        h1 {
+            color: #FF5733;
+            margin-bottom: 20px;
+        }
+
+        #story-box {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #FF5733;
+            border-radius: 8px;
+            background-color: #1E1E1E;
+        }
+
+        .choice, .back-button {
+            background-color: #e7f705;
+            color: rgb(0, 0, 0);
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .choice:hover, .back-button:hover {
+            background-color: #000000;
+            color:#e7f705 ;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="story-title">Welcome to Your Adventure</h1>
+        <div id="story-box">
+            <p id="story-text">Select a story to begin your adventure!</p>
+        </div>
+        <div id="choices-box">
+            <button class="choice" onclick="chooseStory('quest')">The Lost Kingdom</button>
+            <button class="choice" onclick="chooseStory('detective')">The Mysterious Case</button>
+            <button class="choice" onclick="chooseStory('space')">Galactic Odyssey</button>
+        </div>
+        <div id="back-button-box" style="display: none;">
+            <button class="back-button" onclick="goHome()">Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+        const body = document.body;
+        const storyTitle = document.getElementById("story-title");
+        const storyText = document.getElementById("story-text");
+        const choicesBox = document.getElementById("choices-box");
+        const backButtonBox = document.getElementById("back-button-box");
+
+        function chooseStory(story) {
+            storyText.innerHTML = "";
+            backButtonBox.style.display = "none"; // Hide back button when starting a new story
+            if (story === 'quest') {
+                storyTitle.innerHTML = "The Lost Kingdom";
+                body.style.backgroundImage = "url('https://c4.wallpaperflare.com/wallpaper/949/458/324/5c1cc6d810c74-wallpaper-thumb.jpg')"; // Change this to a forest background
+                storyText.innerHTML = "You stumble upon an ancient map leading to a lost kingdom hidden deep in the forest. Do you follow the map or ignore it?";
+                updateChoices(['follow_map', 'ignore_map'], ['Follow the Map', 'Ignore It']);
+            } else if (story === 'detective') {
+                storyTitle.innerHTML = "The Mysterious Case";
+                body.style.backgroundImage = "url('https://e1.pxfuel.com/desktop-wallpaper/912/386/desktop-wallpaper-sherlock-holmes-hollywood-movies-movies-sherlock-pc.jpg')"; // Change this to a detective scene
+                storyText.innerHTML = "As a detective, you receive a call about a stolen artifact from the museum. Do you visit the crime scene or interview witnesses first?";
+                updateChoices(['crime_scene', 'interview_witnesses'], ['Visit the Crime Scene', 'Interview Witnesses']);
+            } else if (story === 'space') {
+                storyTitle.innerHTML = "Galactic Odyssey";
+                body.style.backgroundImage = "url('https://static.vecteezy.com/system/resources/previews/029/985/759/large_2x/mystery-hypnotic-vibrant-colors-in-hq-hd-8k-space-wallpaper-ai-generated-photo.jpeg')"; // Change this to a galaxy or space background
+                storyText.innerHTML = "You are a pilot on a mission to explore uncharted galaxies. Do you land on a strange planet or send a probe first?";
+                updateChoices(['land', 'send_probe'], ['Land on the Planet', 'Send a Probe']);
+            }
+        }
+
+        function updateChoices(choices, labels) {
+            choicesBox.innerHTML = ''; // Clear old buttons
+            choices.forEach((choice, index) => {
+                let button = document.createElement("button");
+                button.className = "choice";
+                button.innerText = labels[index];
+                button.onclick = function () { makeChoice(choice); };
+                choicesBox.appendChild(button);
+            });
+        }
+
+        function makeChoice(choice) {
+            if (storyTitle.innerHTML === "The Lost Kingdom") {
+                // "The Lost Kingdom" story options (already written)
+            } else if (storyTitle.innerHTML === "The Mysterious Case") {
+                if (choice === 'crime_scene') {
+                    storyText.innerHTML = "At the crime scene, you find a strange footprint. Do you follow it or examine the surrounding area?";
+                    updateChoices(['follow_footprint', 'examine_area'], ['Follow the Footprint', 'Examine the Area']);
+                } else if (choice === 'interview_witnesses') {
+                    storyText.innerHTML = "You interview a witness who claims to have seen a shadowy figure. Do you believe the witness or gather more evidence?";
+                    updateChoices(['believe_witness', 'gather_evidence'], ['Believe the Witness', 'Gather More Evidence']);
+                } else if (choice === 'follow_footprint') {
+                    storyText.innerHTML = "You follow the footprint and discover a secret passage. Do you enter the passage or call for backup?";
+                    updateChoices(['enter_passage', 'call_backup'], ['Enter the Passage', 'Call for Backup']);
+                } else if (choice === 'examine_area') {
+                    storyText.innerHTML = "You examine the surrounding area and find a mysterious note. Do you follow the instructions on the note or disregard it?";
+                    updateChoices(['follow_note', 'disregard_note'], ['Follow the Note', 'Disregard the Note']);
+                } else if (choice === 'believe_witness') {
+                    storyText.innerHTML = "Believing the witness, you pursue the shadowy figure and successfully recover the stolen artifact. Case solved!";
+                    hideChoices();
+                } else if (choice === 'gather_evidence') {
+                    storyText.innerHTML = "Gathering more evidence, you uncover a conspiracy and arrest the real mastermind behind the theft. Great detective work!";
+                    hideChoices();
+                } else if (choice === 'enter_passage') {
+                    storyText.innerHTML = "You enter the secret passage and find the stolen artifact hidden underground. You solve the case and return as a hero!";
+                    hideChoices();
+                } else if (choice === 'call_backup') {
+                    storyText.innerHTML = "You call for backup, but the criminal escapes in the meantime. The case remains unsolved. Better luck next time.";
+                    hideChoices();
+                } else if (choice === 'follow_note') {
+                    storyText.innerHTML = "Following the note's instructions, you uncover the criminal's hideout and apprehend the thief. Another case successfully closed!";
+                    hideChoices();
+                } else if (choice === 'disregard_note') {
+                    storyText.innerHTML = "Ignoring the note, you miss a key clue and the case goes cold. The artifact is never found. The mystery continues...";
+                    hideChoices();
+                }
+            } else if (storyTitle.innerHTML === "Galactic Odyssey") {
+                if (choice === 'land') {
+                    storyText.innerHTML = "You land on the strange planet and discover an alien civilization. Do you approach them or survey the area first?";
+                    updateChoices(['approach', 'survey_area'], ['Approach the Aliens', 'Survey the Area']);
+                } else if (choice === 'send_probe') {
+                    storyText.innerHTML = "Sending a probe reveals a mysterious energy source. Do you investigate further or return to your ship?";
+                    updateChoices(['investigate_energy', 'return_ship'], ['Investigate the Energy Source', 'Return to the Ship']);
+                } else if (choice === 'approach') {
+                    storyText.innerHTML = "You approach the aliens and establish friendly relations. They share advanced technology, and you return to Earth as a hero!";
+                    hideChoices();
+                } else if (choice === 'survey_area') {
+                    storyText.innerHTML = "You survey the area and discover the planet's atmosphere is toxic. You quickly return to your ship, narrowly escaping danger!";
+                    hideChoices();
+                } else if (choice === 'investigate_energy') {
+                    storyText.innerHTML = "Investigating the energy source, you unlock a hidden alien technology that revolutionizes space travel. Your mission is a great success!";
+                    hideChoices();
+                } else if (choice === 'return_ship') {
+                    storyText.innerHTML = "You return to your ship, deciding not to risk it. However, your superiors commend you for your caution and you live to explore another day.";
+                    hideChoices();
+                }
+            }
+            backButtonBox.style.display = "block"; // Show back button when a story ends
+        }
+
+        function hideChoices() {
+            choicesBox.innerHTML = ''; // Clear choices when the story ends
+        }
+
+        function goHome() {
+            storyTitle.innerHTML = "Welcome to Your Adventure";
+            storyText.innerHTML = "Select a story to begin your adventure!";
+            choicesBox.innerHTML = `
+                <button class="choice" onclick="chooseStory('quest')">The Lost Kingdom</button>
+                <button class="choice" onclick="chooseStory('detective')">The Mysterious Case</button>
+                <button class="choice" onclick="chooseStory('space')">Galactic Odyssey</button>
+            `;
+            backButtonBox.style.display = "none";
+            body.style.backgroundImage = 'url("https://png.pngtree.com/thumb_back/fw800/background/20240104/pngtree-dynamic-design-books-soaring-through-arrow-adorned-background-with-textured-patterns-image_13911344.png")'; // Reset background
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
